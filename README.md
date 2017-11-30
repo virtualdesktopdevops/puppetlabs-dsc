@@ -5,6 +5,11 @@
 [wmf5-blog-post]: https://msdn.microsoft.com/en-us/powershell/wmf/5.1/release-notes
 [wmf5-blog-incompatibilites]: https://msdn.microsoft.com/en-us/powershell/wmf/5.1/productincompat
 
+#### Forked module update
+Added Storefront: 0.9.5-PSGallery and XenDesktop7: 2.5.0-PSGallery
+Upgraded SQLServer to 8.2.0.0 to get xSQLServerAlwayOnAvailabilityGroupDatabaseMembership DSC resource. Requires windows 2016 to get rid of max path problem
+Upgraded xActiveDirectory to development version to get xADServicePrincipalName
+
 #### Table of Contents
 
 1. [Description - What is the dsc module and what does it do](#module-description)

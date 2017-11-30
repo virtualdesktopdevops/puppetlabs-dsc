@@ -1,3 +1,8 @@
+## 2017-11-30 - Custom DSC resources added
+Added Storefront: 0.9.5-PSGallery and XenDesktop7: 2.5.0-PSGallery
+Upgraded SQLServer to 8.2.0.0 to get xSQLServerAlwayOnAvailabilityGroupDatabaseMembership DSC resource. Requires windows 2016 to get rid of max path problem
+Upgraded xActiveDirectory to development version to get xADServicePrincipalName
+
 ## 2017-08-30 - Supported Release 1.4.0
 
 The DSC module received bug fixes mainly related to conflicting with the PowerShell module. The module was also updated with the July and August DSC Resource Packs.
