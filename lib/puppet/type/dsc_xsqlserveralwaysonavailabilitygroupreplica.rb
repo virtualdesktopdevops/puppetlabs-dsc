@@ -29,7 +29,7 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroupreplica) do
   def dscmeta_resource_friendly_name; 'xSQLServerAlwaysOnAvailabilityGroupReplica' end
   def dscmeta_resource_name; 'MSFT_xSQLServerAlwaysOnAvailabilityGroupReplica' end
   def dscmeta_module_name; 'xSQLServer' end
-  def dscmeta_module_version; '7.0.0.0' end
+  def dscmeta_module_version; '8.2.0.0' end
 
   newparam(:name, :namevar => true ) do
   end
@@ -64,7 +64,7 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroupreplica) do
   newparam(:dsc_name) do
     def mof_type; 'string' end
     def mof_is_embedded?; false end
-    desc "Name - The name of the availability group replica."
+    desc "Name - The name of the availability group replica. For named instances this must be in the following format SQLServer\\InstanceName."
     isrequired
     validate do |value|
       unless value.kind_of?(String)
@@ -111,7 +111,7 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroupreplica) do
   newparam(:dsc_sqlinstancename) do
     def mof_type; 'string' end
     def mof_is_embedded?; false end
-    desc "SQLInstanceName - Name of the SQL instance to be configued."
+    desc "SQLInstanceName - Name of the SQL instance to be configured."
     isrequired
     validate do |value|
       unless value.kind_of?(String)
@@ -307,6 +307,39 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroupreplica) do
     end
   end
 
+  # Name:         EndpointPort
+  # Type:         uint16
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_endpointport) do
+    def mof_type; 'uint16' end
+    def mof_is_embedded?; false end
+    desc "EndpointPort - Output the network port the endpoint is listening on. Used by Get-TargetResource."
+    validate do |value|
+      unless (value.kind_of?(Numeric) && value >= 0) || (value.to_i.to_s == value && value.to_i >= 0)
+          fail("Invalid value #{value}. Should be a unsigned Integer")
+      end
+    end
+    munge do |value|
+      PuppetX::Dsc::TypeHelpers.munge_integer(value)
+    end
+  end
+
+  # Name:         EndpointUrl
+  # Type:         string
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_endpointurl) do
+    def mof_type; 'string' end
+    def mof_is_embedded?; false end
+    desc "EndpointUrl - Output the endpoint URL of the Availability Group Replica. Used by Get-TargetResource."
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
+  end
+
   # Name:         SqlServerNetName
   # Type:         string
   # IsMandatory:  False
@@ -314,7 +347,7 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroupreplica) do
   newparam(:dsc_sqlservernetname) do
     def mof_type; 'string' end
     def mof_is_embedded?; false end
-    desc "SqlServerNetName - Output the NetName property from the SQL Server object. Used by Get-TargetResource"
+    desc "SqlServerNetName - Output the NetName property from the SQL Server object. Used by Get-TargetResource."
     validate do |value|
       unless value.kind_of?(String)
         fail("Invalid value '#{value}'. Should be a string")

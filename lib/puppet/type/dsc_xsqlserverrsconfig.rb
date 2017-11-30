@@ -27,7 +27,7 @@ Puppet::Type.newtype(:dsc_xsqlserverrsconfig) do
   def dscmeta_resource_friendly_name; 'xSQLServerRSConfig' end
   def dscmeta_resource_name; 'MSFT_xSQLServerRSConfig' end
   def dscmeta_module_name; 'xSQLServer' end
-  def dscmeta_module_version; '7.0.0.0' end
+  def dscmeta_module_version; '8.2.0.0' end
 
   newparam(:name, :namevar => true ) do
   end
@@ -100,19 +100,69 @@ Puppet::Type.newtype(:dsc_xsqlserverrsconfig) do
     end
   end
 
-  # Name:         SQLAdminCredential
-  # Type:         MSFT_Credential
+  # Name:         ReportServerVirtualDirectory
+  # Type:         string
   # IsMandatory:  False
   # Values:       None
-  newparam(:dsc_sqladmincredential) do
-    def mof_type; 'MSFT_Credential' end
-    def mof_is_embedded?; true end
-    desc "SQLAdminCredential - Credential to be used to perform the configuration."
+  newparam(:dsc_reportservervirtualdirectory) do
+    def mof_type; 'string' end
+    def mof_is_embedded?; false end
+    desc "ReportServerVirtualDirectory - Report Server Web Service virtual directory. Optional."
     validate do |value|
-      unless value.kind_of?(Hash)
-        fail("Invalid value '#{value}'. Should be a hash")
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
       end
-      PuppetX::Dsc::TypeHelpers.validate_MSFT_Credential("SQLAdminCredential", value)
+    end
+  end
+
+  # Name:         ReportsVirtualDirectory
+  # Type:         string
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_reportsvirtualdirectory) do
+    def mof_type; 'string' end
+    def mof_is_embedded?; false end
+    desc "ReportsVirtualDirectory - Report Manager/Report Web App virtual directory name. Optional."
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
+  end
+
+  # Name:         ReportServerReservedUrl
+  # Type:         string[]
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_reportserverreservedurl, :array_matching => :all) do
+    def mof_type; 'string[]' end
+    def mof_is_embedded?; false end
+    desc "ReportServerReservedUrl - Report Server URL reservations. Optional. If not specified, 'http://+:80' URL reservation will be used."
+    validate do |value|
+      unless value.kind_of?(Array) || value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string or an array of strings")
+      end
+    end
+    munge do |value|
+      Array(value)
+    end
+  end
+
+  # Name:         ReportsReservedUrl
+  # Type:         string[]
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_reportsreservedurl, :array_matching => :all) do
+    def mof_type; 'string[]' end
+    def mof_is_embedded?; false end
+    desc "ReportsReservedUrl - Report Manager/Report Web App URL reservations. Optional. If not specified, 'http://+:80' URL reservation will be used."
+    validate do |value|
+      unless value.kind_of?(Array) || value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string or an array of strings")
+      end
+    end
+    munge do |value|
+      Array(value)
     end
   end
 

@@ -28,7 +28,7 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroup) do
   def dscmeta_resource_friendly_name; 'xSQLServerAlwaysOnAvailabilityGroup' end
   def dscmeta_resource_name; 'MSFT_xSQLServerAlwaysOnAvailabilityGroup' end
   def dscmeta_module_name; 'xSQLServer' end
-  def dscmeta_module_version; '7.0.0.0' end
+  def dscmeta_module_version; '8.2.0.0' end
 
   newparam(:name, :namevar => true ) do
   end
@@ -94,7 +94,7 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroup) do
   newparam(:dsc_sqlinstancename) do
     def mof_type; 'string' end
     def mof_is_embedded?; false end
-    desc "SQLInstanceName - Name of the SQL instance to be configued."
+    desc "SQLInstanceName - Name of the SQL instance to be configured."
     isrequired
     validate do |value|
       unless value.kind_of?(String)
@@ -184,6 +184,38 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroup) do
     def mof_type; 'boolean' end
     def mof_is_embedded?; false end
     desc "BasicAvailabilityGroup - Specifies the type of availability group is Basic. This is only available is SQL Server 2016 and later and is ignored when applied to previous versions."
+    validate do |value|
+    end
+    newvalues(true, false)
+    munge do |value|
+      PuppetX::Dsc::TypeHelpers.munge_boolean(value.to_s)
+    end
+  end
+
+  # Name:         DatabaseHealthTrigger
+  # Type:         boolean
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_databasehealthtrigger) do
+    def mof_type; 'boolean' end
+    def mof_is_embedded?; false end
+    desc "DatabaseHealthTrigger - Specifies if the option Database Level Health Detection is enabled. This is only available is SQL Server 2016 and later and is ignored when applied to previous versions."
+    validate do |value|
+    end
+    newvalues(true, false)
+    munge do |value|
+      PuppetX::Dsc::TypeHelpers.munge_boolean(value.to_s)
+    end
+  end
+
+  # Name:         DtcSupportEnabled
+  # Type:         boolean
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_dtcsupportenabled) do
+    def mof_type; 'boolean' end
+    def mof_is_embedded?; false end
+    desc "DtcSupportEnabled - Specifies if the option Database DTC Support is enabled. This is only available is SQL Server 2016 and later and is ignored when applied to previous versions. This can't be altered once the Availability Group is created and is ignored if it is the case."
     validate do |value|
     end
     newvalues(true, false)
@@ -287,6 +319,72 @@ Puppet::Type.newtype(:dsc_xsqlserveralwaysonavailabilitygroup) do
     def mof_type; 'uint32' end
     def mof_is_embedded?; false end
     desc "HealthCheckTimeout - Specifies the length of time, in milliseconds, after which AlwaysOn availability groups declare an unresponsive server to be unhealthy. Default is 30000."
+    validate do |value|
+      unless (value.kind_of?(Numeric) && value >= 0) || (value.to_i.to_s == value && value.to_i >= 0)
+          fail("Invalid value #{value}. Should be a unsigned Integer")
+      end
+    end
+    munge do |value|
+      PuppetX::Dsc::TypeHelpers.munge_integer(value)
+    end
+  end
+
+  # Name:         EndpointUrl
+  # Type:         string
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_endpointurl) do
+    def mof_type; 'string' end
+    def mof_is_embedded?; false end
+    desc "EndpointUrl - Gets the Endpoint URL of the availability group replica endpoint."
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
+  end
+
+  # Name:         EndpointPort
+  # Type:         uint32
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_endpointport) do
+    def mof_type; 'uint32' end
+    def mof_is_embedded?; false end
+    desc "EndpointPort - Gets the port the database mirroring endpoint is listening on."
+    validate do |value|
+      unless (value.kind_of?(Numeric) && value >= 0) || (value.to_i.to_s == value && value.to_i >= 0)
+          fail("Invalid value #{value}. Should be a unsigned Integer")
+      end
+    end
+    munge do |value|
+      PuppetX::Dsc::TypeHelpers.munge_integer(value)
+    end
+  end
+
+  # Name:         SQLServerNetName
+  # Type:         string
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_sqlservernetname) do
+    def mof_type; 'string' end
+    def mof_is_embedded?; false end
+    desc "SQLServerNetName - Gets the hostname the SQL Server instance is listening on."
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
+  end
+
+  # Name:         Version
+  # Type:         uint32
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_version) do
+    def mof_type; 'uint32' end
+    def mof_is_embedded?; false end
+    desc "Version - Gets the major version of the SQL Server instance."
     validate do |value|
       unless (value.kind_of?(Numeric) && value >= 0) || (value.to_i.to_s == value && value.to_i >= 0)
           fail("Invalid value #{value}. Should be a unsigned Integer")
