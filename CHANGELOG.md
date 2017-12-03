@@ -1,7 +1,10 @@
+## 2017-12-03 - xFailOverCluster windows 2016 bugfix
+- Changed lib/puppet_x/dsc_resources/xFailOverCluster/DSCResources/MSFT_xClusterQuorum$ vi MSFT_xClusterQuorum.psm1 (line 42) to make xClusterQuorum resource work in Windows 2016 with a file share witness. Manual change waiting approval of [PR 144](https://github.com/PowerShell/xFailOverCluster/pull/144) by xFailOverCluster maintener
+
 ## 2017-11-30 - Custom DSC resources added
-Added Storefront: 0.9.5-PSGallery and XenDesktop7: 2.5.0-PSGallery
-Upgraded SQLServer to 8.2.0.0 to get xSQLServerAlwayOnAvailabilityGroupDatabaseMembership DSC resource. Requires windows 2016 to get rid of max path problem
-Upgraded xActiveDirectory to development version to get xADServicePrincipalName
+- Added Storefront: 0.9.5-PSGallery and XenDesktop7: 2.5.0-PSGallery
+- Upgraded SQLServer to 8.2.0.0 to get xSQLServerAlwayOnAvailabilityGroupDatabaseMembership DSC resource. Requires windows 2016 to get rid of max path problem
+- Upgraded xActiveDirectory to development version to get xADServicePrincipalName
 
 ## 2017-08-30 - Supported Release 1.4.0
 
