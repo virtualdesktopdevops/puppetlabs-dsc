@@ -27,7 +27,7 @@ Puppet::Type.newtype(:dsc_sfgateway) do
   def dscmeta_resource_friendly_name; 'SFGateway' end
   def dscmeta_resource_name; 'VE_SFGateway' end
   def dscmeta_module_name; 'Storefront' end
-  def dscmeta_module_version; '0.9.4' end
+  def dscmeta_module_version; '0.9.5' end
 
   newparam(:name, :namevar => true ) do
   end

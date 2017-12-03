@@ -1,6 +1,6 @@
 ---
-Storefront: 0.9.5-PSGallery
-XenDesktop7: 2.5.0-PSGallery
+Storefront: 175a40ed36bc62b66ac9831de1b09cacda3c31de
+XenDesktop7: 5100e4710ccbe68e929a5d9f8be77fca773046fd
 xActiveDirectory: 2.16.0.0-PSGallery
 xAdcsDeployment: 1.1.0.0-PSGallery
 xAzure: 0.2.0.0-PSGallery

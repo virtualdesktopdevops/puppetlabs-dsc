@@ -27,7 +27,7 @@ Puppet::Type.newtype(:dsc_sfcluster) do
   def dscmeta_resource_friendly_name; 'SFCluster' end
   def dscmeta_resource_name; 'VE_SFCluster' end
   def dscmeta_module_name; 'Storefront' end
-  def dscmeta_module_version; '0.9.4' end
+  def dscmeta_module_version; '0.9.5' end
 
   newparam(:name, :namevar => true ) do
   end
