@@ -1,4 +1,4 @@
-﻿# Suppressed as per PSSA Rule Severity guidelines for unit/integration tests:
+# Suppressed as per PSSA Rule Severity guidelines for unit/integration tests:
 # https://github.com/PowerShell/DscResources/blob/master/PSSARuleSeverities.md
 [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
 param ()
@@ -66,7 +66,7 @@ function Get-TargetResource
         $DiskId,
 
         [Parameter()]
-        [ValidateSet('Number', 'UniqueId')]
+        [ValidateSet('Number', 'UniqueId', 'Guid')]
         [System.String]
         $DiskIdType = 'Number',
 
@@ -104,13 +104,10 @@ function Get-TargetResource
     # Validate the DriveLetter parameter
     $DriveLetter = Assert-DriveLetterValid -DriveLetter $DriveLetter
 
-    $diskIdParameter = @{
-        $DiskIdType = $DiskId
-    }
-
-    $disk = Get-Disk `
-        @diskIdParameter `
-        -ErrorAction SilentlyContinue
+    # Get the Disk using the identifiers supplied
+    $disk = Get-DiskByIdentifier `
+        -DiskId $DiskId `
+        -DiskIdType $DiskIdType
 
     $partition = Get-Partition `
         -DriveLetter $DriveLetter `
@@ -154,7 +151,7 @@ function Get-TargetResource
     Specifies the identifier type the DiskId contains. Defaults to Number.
 
     .PARAMETER Size
-    Specifies the size of new volume (use all available space on disk if not provided).
+    Specifies the size of new volume. Leave empty to use the remaining free space.
 
     .PARAMETER FSLabel
     Specifies the volume label to assign to the volume.
@@ -187,7 +184,7 @@ function Set-TargetResource
         $DiskId,
 
         [Parameter()]
-        [ValidateSet('Number', 'UniqueId')]
+        [ValidateSet('Number', 'UniqueId', 'Guid')]
         [System.String]
         $DiskIdType = 'Number',
 
@@ -225,13 +222,10 @@ function Set-TargetResource
     # Validate the DriveLetter parameter
     $DriveLetter = Assert-DriveLetterValid -DriveLetter $DriveLetter
 
-    $diskIdParameter = @{
-        $DiskIdType = $DiskId
-    }
-
-    $disk = Get-Disk `
-        @diskIdParameter `
-        -ErrorAction Stop
+    # Get the Disk using the identifiers supplied
+    $disk = Get-DiskByIdentifier `
+        -DiskId $DiskId `
+        -DiskIdType $DiskIdType
 
     if ($disk.IsOffline)
     {
@@ -258,7 +252,7 @@ function Set-TargetResource
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($localizedData.CheckingDiskPartitionStyleMessage -f $DiskIdType, $DiskId)
-        ) -join '' )    
+        ) -join '' )
 
     if ($AllowDestructive -and $ClearDisk -and $disk.PartitionStyle -ne 'RAW')
     {
@@ -268,7 +262,11 @@ function Set-TargetResource
             ) -join '' )
 
         $disk | Clear-Disk -RemoveData -RemoveOEM -Confirm:$true
-        $disk = $disk | Get-Disk
+
+        # Requery the disk
+        $disk = Get-DiskByIdentifier `
+            -DiskId $DiskId `
+            -DiskIdType $DiskIdType
     }
 
     switch ($disk.PartitionStyle)
@@ -331,7 +329,7 @@ function Set-TargetResource
             {
                 # Find the first basic partition matching the size
                 $partition = $partition |
-                    Where-Object -Filter { $_.Type -eq 'Basic' -and $_.Size -eq $Size } |
+                    Where-Object -FilterScript { $_.Type -eq 'Basic' -and $_.Size -eq $Size } |
                     Select-Object -First 1
 
                 if ($partition)
@@ -349,8 +347,45 @@ function Set-TargetResource
             }
             else
             {
-                # No size specified so no partition can be matched
+                <#
+                    No size specified, so see if there is a partition that has a volume
+                    matching the file system type that is not assigned to a drive letter.
+                #>
+                Write-Verbose -Message ($localizedData.MatchingPartitionNoSizeMessage -f `
+                        $DiskIdType, $DiskId)
+
+                $searchPartitions = $partition | Where-Object -FilterScript {
+                    $_.Type -eq 'Basic' -and -not [System.Char]::IsLetter($_.DriveLetter)
+                }
+
                 $partition = $null
+
+                foreach ($searchPartition in $searchPartitions)
+                {
+                    # Look for the volume in the partition.
+                    Write-Verbose -Message ($localizedData.SearchForVolumeMessage -f `
+                            $DiskIdType, $DiskId, $searchPartition.PartitionNumber, $FSFormat)
+
+                    $searchVolumes = $searchPartition | Get-Volume
+
+                    $volumeMatch = $searchVolumes | Where-Object -FilterScript {
+                        $_.FileSystem -eq $FSFormat
+                    }
+
+                    if ($volumeMatch)
+                    {
+                        <#
+                            Found a partition with a volume that matches file system
+                            type and not assigned a drive letter.
+                        #>
+                        $partition = $searchPartition
+
+                        Write-Verbose -Message ($localizedData.VolumeFoundMessage -f `
+                                $DiskIdType, $DiskId, $searchPartition.PartitionNumber, $FSFormat)
+
+                        break
+                    } # if
+                } # foreach
             } # if
         } # if
 
@@ -440,7 +475,7 @@ function Set-TargetResource
                             $($localizedData.ResizeRefsNotPossible `
                                     -f $DriveLetter, $assignedPartition.Size, $Size)
                         ) -join '' )
-            
+
                 }
                 else
                 {
@@ -448,10 +483,10 @@ function Set-TargetResource
                             "$($MyInvocation.MyCommand): "
                             $($localizedData.SizeMismatchCorrection `
                                     -f $DriveLetter, $assignedPartition.Size, $Size)
-                        ) -join '' )                
-                
+                        ) -join '' )
+
                     $supportedSize = ($assignedPartition | Get-PartitionSupportedSize)
-            
+
                     if ($size -gt $supportedSize.SizeMax)
                     {
                         New-InvalidArgumentException -Message ( @(
@@ -565,7 +600,7 @@ function Set-TargetResource
                 "$($MyInvocation.MyCommand): "
                 $($localizedData.SuccessfullyInitializedMessage -f $DriveLetter)
             ) -join '' )
-    } # if    
+    } # if
 } # Set-TargetResource
 
 <#
@@ -582,7 +617,7 @@ function Set-TargetResource
     Specifies the identifier type the DiskId contains. Defaults to Number.
 
     .PARAMETER Size
-    Specifies the size of new volume (use all available space on disk if not provided).
+    Specifies the size of new volume. Leave empty to use the remaining free space.
 
     .PARAMETER FSLabel
     Specifies the volume label to assign to the volume.
@@ -614,7 +649,7 @@ function Test-TargetResource
         $DiskId,
 
         [Parameter()]
-        [ValidateSet('Number', 'UniqueId')]
+        [ValidateSet('Number', 'UniqueId', 'Guid')]
         [System.String]
         $DiskIdType = 'Number',
 
@@ -652,18 +687,15 @@ function Test-TargetResource
     # Validate the DriveLetter parameter
     $DriveLetter = Assert-DriveLetterValid -DriveLetter $DriveLetter
 
-    $diskIdParameter = @{
-        $DiskIdType = $DiskId
-    }
-
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($localizedData.CheckDiskInitializedMessage -f $DiskIdType, $DiskId)
         ) -join '' )
 
-    $disk = Get-Disk `
-        @diskIdParameter `
-        -ErrorAction SilentlyContinue
+    # Get the Disk using the identifiers supplied
+    $disk = Get-DiskByIdentifier `
+        -DiskId $DiskId `
+        -DiskIdType $DiskIdType
 
     if (-not $disk)
     {

@@ -10,7 +10,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '3.2.0.0'
+ModuleVersion = '3.4.0.0'
 
 # ID used to uniquely identify this module
 GUID = '00d73ca1-58b5-46b7-ac1a-5bfcf5814faf'
@@ -22,7 +22,7 @@ Author = 'PowerShell DSC'
 CompanyName = 'Microsoft Corporation'
 
 # Copyright statement for this module
-Copyright = '2015'
+Copyright = '2017'
 
 # Description of the functionality provided by this module
 Description = 'This module contains all resources related to the PowerShell Storage module, or pertaining to disk management.'
@@ -103,17 +103,14 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = '- xDisk:
-  - Fix error message when new partition does not become writable before timeout.
-  - Removed unneeded timeout initialization code.
+  - Removed duplicate integration tests for Guid Disk Id type.
+  - Added new contexts to integration tests improve clarity.
+  - Fix bug when size not specified and disk partitioned and
+    formatted but not assigned drive letter - See [Issue 103](https://github.com/PowerShell/xStorage/issues/103).
 - xDiskAccessPath:
-  - Fix error message when new partition does not become writable before timeout.
-  - Removed unneeded timeout initialization code.
-  - Fix error when used on Windows Server 2012 R2 - See [Issue 102](https://github.com/PowerShell/xStorage/issues/102).
-- Added the VS Code PowerShell extension formatting settings that cause PowerShell
-  files to be formatted as per the DSC Resource kit style guidelines.
-- Removed requirement on Hyper-V PowerShell module to execute integration tests.
-- xMountImage:
-  - Fix error when mounting VHD on Windows Server 2012 R2 - See [Issue 105](https://github.com/PowerShell/xStorage/issues/105)
+  - Added new contexts to integration tests improve clarity.
+  - Fix bug when size not specified and disk partitioned and
+    formatted but not assigned to path - See [Issue 103](https://github.com/PowerShell/xStorage/issues/103).
 
 '
 
@@ -128,6 +125,8 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
+
+
 
 
 

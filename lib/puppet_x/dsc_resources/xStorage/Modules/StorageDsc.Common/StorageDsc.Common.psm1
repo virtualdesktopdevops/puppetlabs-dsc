@@ -1,4 +1,4 @@
-﻿# Import the Networking Resource Helper Module
+# Import the Networking Resource Helper Module
 Import-Module -Name (Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) `
                                -ChildPath (Join-Path -Path 'StorageDsc.ResourceHelper' `
                                                      -ChildPath 'StorageDsc.ResourceHelper.psm1'))
@@ -104,4 +104,89 @@ function Assert-AccessPathValid
     return $AccessPath
 } # end function Assert-AccessPathValid
 
-Export-ModuleMember -Function @( 'Assert-DriveLetterValid', 'Assert-AccessPathValid' )
+
+<#
+    .SYNOPSIS
+    Retrieves a Disk object matching the disk Id and Id type
+    provided.
+
+    .PARAMETER DiskId
+    Specifies the disk identifier for the disk to retrieve.
+
+    .PARAMETER DiskIdType
+    Specifies the identifier type the DiskId contains. Defaults to Number.
+#>
+function Get-DiskByIdentifier
+{
+    [CmdletBinding()]
+    [OutputType([Microsoft.Management.Infrastructure.CimInstance])]
+    param
+    (
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $DiskId,
+
+        [Parameter()]
+        [ValidateSet('Number','UniqueId','Guid')]
+        [System.String]
+        $DiskIdType = 'Number'
+    )
+
+    if ($DiskIdType -eq 'Guid')
+    {
+        # The Disk Id requested uses a Guid so have to get all disks and filter
+        $disk = Get-Disk `
+            -ErrorAction SilentlyContinue |
+            Where-Object -Property Guid -EQ $DiskId
+    }
+    else
+    {
+        $diskIdParameter = @{
+            $DiskIdType = $DiskId
+        }
+
+        $disk = Get-Disk `
+            @diskIdParameter `
+            -ErrorAction SilentlyContinue
+    }
+
+    return $disk
+} # end function Get-DiskByIdentifier
+
+<#
+    .SYNOPSIS
+    Tests if any of the access paths from a partition are assigned
+    to a local path.
+
+    .PARAMETER AccessPath
+    Specifies the access paths that are assigned to the partition.
+#>
+function Test-AccessPathAssignedToLocal
+{
+    [CmdletBinding()]
+    [OutputType([System.Boolean])]
+    param
+    (
+        [Parameter(Mandatory = $true)]
+        [System.String[]]
+        $AccessPath
+    )
+
+    $accessPathAssigned = $false
+    foreach ($path in $AccessPath)
+    {
+        if ($path -match '[a-zA-Z]:\\')
+        {
+            $accessPathAssigned = $true
+            break
+        }
+    }
+
+    return $accessPathAssigned
+} # end function Test-AccessPathLocal
+
+Export-ModuleMember -Function `
+    Assert-DriveLetterValid, `
+    Assert-AccessPathValid, `
+    Get-DiskByIdentifier,
+    Test-AccessPathAssignedToLocal
