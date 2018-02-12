@@ -1,6 +1,0 @@
-
-[ClassVersion("1.0.0"), FriendlyName("XD7StoreFrontBaseUrl")]
-class VE_XD7StoreFrontBaseUrl : OMI_BaseResource
-{
-    [Key, Description("Citrix StoreFront base url")] String BaseUrl;
-};
