@@ -1,0 +1,18 @@
+﻿[ClassVersion("1.0.0"), FriendlyName("SFStoreFarm")]
+class VE_SFStoreFarm : OMI_BaseResource
+{
+    [Key, Description("Storefront Store virtual path")] String StoreVirtualPath;
+    [Key, Description("Farm display name")] String FarmName;
+    [Required, Description("The hostnames or IP addresses of the xml services"), ValueMap{"XenApp","XenDesktop","AppController","VDIinaBox"}, Values{"XenApp","XenDesktop","AppController","VDIinaBox"}] String FarmType;
+    [Required, Description("Citrix XenDesktop delivery controllers")] String Servers[];
+    [Write, Description("Xml service communication port")] Uint32 Port;
+    [Write, Description("Xml service transport type"), ValueMap{"HTTP","HTTPS","SSL"}, Values{"HTTP","HTTPS","SSL"}] String TransportType;
+    [Write, Description("Round robin load balance the xml service servers")] Boolean LoadBalance;
+    [Write, Description("Period of time to skip a server when is fails to respond")] Uint32 SSLRelayServicePort;
+    [Write, Description("Period of time to skip all xml service requests should all servers fail to respond")] Uint32 AllFailedBypassDuration;
+    [Write, Description("Period of time to skip a server when is fails to respond")] Uint32 BypassDuration;
+    [Write, Description("Period of time an ICA launch ticket is valid once requested on pre 7.0 XenApp and XenDesktop farms")] Uint32 TicketTimeToLive;
+    [Write, Description("Period of time a RADE launch ticket is valid once requested on pre 7.0 XenApp and XenDesktop farms")] Uint32 RadeTicketTimeToLive;
+    [Write, Description("Maximum number of servers within a single farm that can fail before aborting a request")] Uint32 MaxFailedServersPerRequest;
+    [Write, ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};
