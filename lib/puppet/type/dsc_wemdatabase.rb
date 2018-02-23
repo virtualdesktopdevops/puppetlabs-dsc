@@ -116,6 +116,21 @@ Puppet::Type.newtype(:dsc_wemdatabase) do
     end
   end
 
+  # Name:         WemInfrastructureServiceAccount
+  # Type:         string
+  # IsMandatory:  False
+  # Values:       None
+  newparam(:dsc_weminfrastructureserviceaccount) do
+    def mof_type; 'string' end
+    def mof_is_embedded?; false end
+    desc "WemInfrastructureServiceAccount - Windows service account of WEM infrastructure service."
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+    end
+  end
+
   # Name:         DefaultAdministratorsGroup
   # Type:         string
   # IsMandatory:  False
