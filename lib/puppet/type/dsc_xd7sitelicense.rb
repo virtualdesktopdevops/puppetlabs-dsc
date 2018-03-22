@@ -108,6 +108,24 @@ Puppet::Type.newtype(:dsc_xd7sitelicense) do
     end
   end
 
+  # Name:         LicenseProduct
+  # Type:         string
+  # IsMandatory:  False
+  # Values:       ["XDT", "MPS"]
+  newparam(:dsc_licenseproduct) do
+    def mof_type; 'string' end
+    def mof_is_embedded?; false end
+    desc "LicenseProduct - Citrix XenDesktop 7 site licensing product code. Valid values are XDT, MPS."
+    validate do |value|
+      unless value.kind_of?(String)
+        fail("Invalid value '#{value}'. Should be a string")
+      end
+      unless ['XDT', 'xdt', 'MPS', 'mps'].include?(value)
+        fail("Invalid value '#{value}'. Valid values are XDT, MPS")
+      end
+    end
+  end
+
   # Name:         LicenseEdition
   # Type:         string
   # IsMandatory:  False
