@@ -28,7 +28,7 @@ Puppet::Type.newtype(:dsc_xd7accesspolicy) do
   def dscmeta_resource_friendly_name; 'XD7AccessPolicy' end
   def dscmeta_resource_name; 'VE_XD7AccessPolicy' end
   def dscmeta_module_name; 'XenDesktop7' end
-  def dscmeta_module_version; '2.5.0' end
+  def dscmeta_module_version; '2.5.9' end
 
   newparam(:name, :namevar => true ) do
   end

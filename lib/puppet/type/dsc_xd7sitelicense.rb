@@ -27,7 +27,7 @@ Puppet::Type.newtype(:dsc_xd7sitelicense) do
   def dscmeta_resource_friendly_name; 'XD7SiteLicense' end
   def dscmeta_resource_name; 'VE_XD7SiteLicense' end
   def dscmeta_module_name; 'XenDesktop7' end
-  def dscmeta_module_version; '2.5.0' end
+  def dscmeta_module_version; '2.5.9' end
 
   newparam(:name, :namevar => true ) do
   end
