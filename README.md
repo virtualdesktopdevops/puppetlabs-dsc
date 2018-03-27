@@ -5,62 +5,16 @@
 [wmf5-blog-post]: https://msdn.microsoft.com/en-us/powershell/wmf/5.1/release-notes
 [wmf5-blog-incompatibilites]: https://msdn.microsoft.com/en-us/powershell/wmf/5.1/productincompat
 
-#### Forked module update
-- Added Storefront: 0.9.5-PSGallery and XenDesktop7: 2.5.0-PSGallery
-- Upgraded SQLServer to 8.2.0.0 to get xSQLServerAlwayOnAvailabilityGroupDatabaseMembership DSC resource. Requires windows 2016 to get rid of max path problem
-- Upgraded xActiveDirectory to development version to get xADServicePrincipalName
-- Fixed xFailOverCluster xClusterQuorum on Windows 2016
+#### Forked module informations
+List of custom DSC resources included in this build :
+- VirtualEngine/Storefront v0.9.6
+- VirtualEngine/XenDesktop7 v2.5.10
+- VirtualDesktopDevops/CitrixWemDsc v0.1.0
+- WSManDsc v2.0.0
+- xWinRM v1.0
+- xSystemSecurity v1.3.0
 
-List of DSC resources included in this build :
-- VirtualEngine/Storefront v0.9.5
-- VirtualEngine/XenDesktop7 v2.5.0
-- claudiospizzi/xActiveDirectory forked from PowerShell/xActiveDirectory to add xADServicePrincipalName resource
-- xAdcsDeployment: 1.1.0.0-PSGallery
-- xAzure: 0.2.0.0-PSGallery
-- xAzurePack: 1.4.0.0-PSGallery
-- xBitlocker: 1.1.0.0-PSGallery
-- xCertificate: 3.0.0.0-PSGallery
-- xComputerManagement: 2.1.0.0-PSGallery
-- xCredSSP: 1.3.0.0-PSGallery
-- xDatabase: 1.6.0.0-PSGallery
-- xDefender: 0.2.0.0-PSGallery
-- xDFS: 3.2.0.0-PSGallery
-- xDhcpServer: 1.6.0.0-PSGallery
-- xDismFeature: 1.2.0.0-PSGallery
-- xDnsServer: 1.8.0.0-PSGallery
-- xExchange: 1.16.0.0-PSGallery
-- xFailOverCluster: 1.8.0.0-PSGallery
-- xHyper-V: 3.9.0.0-PSGallery
-- xInternetExplorerHomePage: 1.0.0-PSGallery
-- xJea: 0.3.0.0-PSGallery
-- xMySql: 2.1.0.0-PSGallery
-- xNetworking: 5.1.0.0-PSGallery
-- xPendingReboot: 0.3.0.0-PSGallery
-- xPhp: 1.2.0.0-PSGallery
-- xPowerShellExecutionPolicy: 1.1.0.0-PSGallery
-- xPSDesiredStateConfiguration: 7.0.0.0-PSGallery
-- xRemoteDesktopAdmin: 1.1.0.0-PSGallery
-- xRemoteDesktopSessionHost: 1.4.0.0-PSGallery
-- xRobocopy: 2.0.0.0-PSGallery
-- xSCDPM: 1.2.0.0-PSGallery
-- xSCOM: 1.3.3.0-PSGallery
-- xSCSMA: 1.5.0.0-PSGallery
-- xSCSPF: 1.3.1.0-PSGallery
-- xSCSR: 1.3.0.0-PSGallery
-- xSCVMM: 1.2.4.0-PSGallery
-- xSharePoint: 1.8.0.0-PSGallery
-- xSmbShare: 2.0.0.0-PSGallery
-- xSqlPs: 1.4.0.0-PSGallery
-- xSQLServer: 8.2.0.0-PSGallery
-- xStorage: 3.2.0.0-PSGallery
-- xTimeZone: 1.6.0.0-PSGallery
-- xWebAdministration: 1.18.0.0-PSGallery
-- xWebDeploy: 1.2.0.0-PSGallery
-- xWindowsEventForwarding: 1.0.0.0-PSGallery
-- xWindowsRestore: 1.0.0-PSGallery
-- xWindowsUpdate: 2.7.0.0-PSGallery
-- xWinEventLog: 1.1.0.0-PSGallery
-- xWordPress: 1.1.0.0-PSGallery
+All the changes to the fork are listed in [CHANGELOG_FORK](CHANGELOG_FORK.md)
 
 #### Table of Contents
 
