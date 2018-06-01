@@ -1,16 +1,20 @@
 {
-  "name": "puppetlabs-dsc",
+  "name": "virtualdesktopdevops-dsc",
   "version": "1.6.0",
-  "author": "Puppet Inc",
-  "summary": "PowerShell Desired State Configuration (DSC)",
+  "author": "virtualdesktopdevops",
+  "summary": "PowerShell Desired State Configuration (DSC) module fork compiled with Citrix XenDesktop DSC resources",
   "license": "Apache-2.0",
-  "source": "https://github.com/puppetlabs/puppetlabs-dsc",
-  "project_page": "https://github.com/puppetlabs/puppetlabs-dsc",
-  "issues_url": "https://tickets.puppet.com/browse/MODULES",
+  "source": "https://virtualdesktopdevops.github.io/puppetlabs-dsc/",
+  "project_page": "http://www.virtualdesktopdevops.com",
+  "issues_url": "https://github.com/virtualdesktopdevops/puppetlabs-dsc/issues",
   "tags": [
     "powershell",
     "desired-state-configuration",
-    "dsc"
+    "dsc",
+    "citrix",
+    "xendesktop",
+    "storefront",
+    "wem"
   ],
   "operatingsystem_support": [
     {

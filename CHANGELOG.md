@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [1.6.0] - 2018-05-09
 
+### VirtualDesktopDevops fork changes
+- Corrected xNetbios issue in xNetworking 5.6.0.0
+- Updated WSManDsc to v2.2.0
+
 ### Added
 
 - Added documentation on the LCM RefreshMode setting ([MODULES-6640](https://tickets.puppetlabs.com/browse/MODULES-6640))
@@ -32,6 +36,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Bumped the puppetlabs-reboot module dependancy to reflect that the new version is 2.0.0 ([MODULES-6678](https://tickets.puppetlabs.com/browse/MODULES-6678))
 
 ## [1.5.0] - 2018-02-19
+
+### VirtualDesktopDevops fork changes
+- Added VirtualEngine/Storefront v0.9.6
+- Added VirtualEngine/XenDesktop7 v2.5.10
+- Added VirtualDesktopDevops/CitrixWemDsc v0.1.0
+- Added WSManDsc v2.0.0
+- Added xWinRM v1.0
+- Added xSystemSecurity v1.3.0
 
 ### Adds
 
